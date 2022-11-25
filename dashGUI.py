@@ -2,7 +2,6 @@ from dash import Dash, html, dcc
 import plotly.express as px 
 import pandas as pd 
 
-#n
 #runs on http://127.0.0.1:8050/
 
 app = Dash(__name__)
@@ -16,11 +15,21 @@ df = pd.DataFrame(dict(
         ))
 rad = px.line_polar(df, r= 'r', theta = 'theta', line_close = True)
 
-
+#would need to change df to win data
 df = px.data.stocks()
 hist = px.histogram(df, x = "date", nbins = 23) #23 weeks in nba season
 
 
+# #overlay team win data 
+# #https://stackoverflow.com/questions/57988604/overlaying-two-histograms-with-plotly-express
+# df2 = pd.DataFrame(dict(
+#     team1 = [], 
+#     team2 = []
+# ))
+# hist = px.histogram(df2, x = "date", color = "series", barmode = "overlay")
+
+
+#dropdown @ https://dash.plotly.com/dash-core-components/dropdown
 app.layout = html.Div(
     children=[
         html.H1(children='Sports Betting'),
