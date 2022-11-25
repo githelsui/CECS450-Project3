@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc
+from dash import Dash, html, dcc, Input, Output
 import plotly.express as px 
 import pandas as pd 
 
@@ -24,6 +24,8 @@ hist = px.histogram(df, x = "date", nbins = 23) #23 weeks in nba season
 app.layout = html.Div(
     children=[
         html.H1(children='Sports Betting'),
+        dcc.Dropdown(['OPT 1', 'OPT 2'], 'OPT 1', id='Test-Dropdown'),
+        html.Div(id='td-output'),
         html.Div(children = 'All Teams Wins/Losses'),
         dcc.Graph(
             id = 'Wins/Loss Histogram',
@@ -35,6 +37,13 @@ app.layout = html.Div(
             figure= rad
         )
 ])
+
+@app.callback(
+    Output('td-output', 'children'),
+    Input('Test-Dropdown', 'value')
+)
+def update_output(value):
+    return f'Displaying {value}'
 
 if __name__ == '__main__': 
     app.run_server(debug=True)
