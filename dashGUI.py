@@ -13,18 +13,29 @@ with open('Odds - Sheet1.csv') as csv_file:
     rows = list(csv_reader)
 
 #This is hacky, but i dont know why the radial chart breaks if I do it the easier, more direct way.
-dataValues = [float(rows[1][5]), float(rows[1][6]), float(rows[1][7]), float(rows[1][9])]
+dataValues1 = [float(rows[1][5]), float(rows[1][6]), float(rows[1][7]), float(rows[1][9])]
+dataValues2 = [float(rows[2][5]), float(rows[2][6]), float(rows[2][7]), float(rows[2][9])]
+descriptionNames = ['Percent 2-Point Field Goals Attempted', 'Percent 3-Point Field Goals Attempted',
+                              'Percent 2-Point Field Goals Scored', 'Percent 3-Point Field Goals Scored']
 #print(dataValues)
 
 #Selected columns are F, G, H, and J
 #Defaulting to first row until we decide how to change what team is being viewed
 df1 = pd.DataFrame.from_dict(dict(
-        value = dataValues,
-        description = ['Percent 2-Point Field Goals Attempted', 'Percent 3-Point Field Goals Attempted',
-                              'Percent 2-Point Field Goals Scored', 'Percent 3-Point Field Goals Scored']
+        value = dataValues1,
+        description = descriptionNames
+        ))
+df2 = pd.DataFrame.from_dict(dict(
+        value = dataValues2,
+        description = descriptionNames
         ))
 #print(df1)
 rad1 = px.line_polar(df1, r= 'value',
+                     theta = 'description',
+                     line_close = True,
+                     range_r = [0, 100])
+
+rad2 = px.line_polar(df2, r= 'value',
                      theta = 'description',
                      line_close = True,
                      range_r = [0, 100])
@@ -49,7 +60,7 @@ app.layout = html.Div(
             id ='Radial Visualization',
             figure= rad1
         )
-])
+    ])
 
 @app.callback(
     Output('td-output', 'children'),
