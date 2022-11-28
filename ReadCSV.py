@@ -30,7 +30,7 @@ def normalizeStatsPoints():
     normalization = []
     data = list(csv.reader(open("Sports Reference NBA Data (2021 - 2022) Season.xlsx - sportsref_download.xls.csv")))
     for i in range(len(data)):
-        if i > 0:
+        if i > 0 and i < 31:
             normalization.append(float(data[i][24]))
 
     minVal = min(normalization)
@@ -49,7 +49,7 @@ def normalizeStatsAssits():
     normalization = []
     data = list(csv.reader(open("Sports Reference NBA Data (2021 - 2022) Season.xlsx - sportsref_download.xls.csv")))
     for i in range(len(data)):
-        if i > 0:
+        if i > 0 and i < 31:
             normalization.append(float(data[i][19]))
 
     minVal = min(normalization)
@@ -69,7 +69,7 @@ def normalizeStatsBlocks():
     normalization = []
     data = list(csv.reader(open("Sports Reference NBA Data (2021 - 2022) Season.xlsx - sportsref_download.xls.csv")))
     for i in range(len(data)):
-        if i > 0:
+        if i > 0 and i < 31:
             normalization.append(float(data[i][21]))
 
     minVal = min(normalization)
@@ -88,7 +88,7 @@ def normalizeStatsSteals():
     normalization = []
     data = list(csv.reader(open("Sports Reference NBA Data (2021 - 2022) Season.xlsx - sportsref_download.xls.csv")))
     for i in range(len(data)):
-        if i > 0:
+        if i > 0 and i < 31:
             normalization.append(float(data[i][20]))
 
     minVal = min(normalization)
