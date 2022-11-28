@@ -21,6 +21,7 @@ from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
 import pandas as pd
 import csv
+import math
 
 #n
 #runs on http://127.0.0.1:8050/
@@ -85,9 +86,17 @@ app.layout = html.Div(
             type = 'number',
             value = 100
             ),
+            dcc.Store(id = 'im1'), 
+            dcc.Store(id = 'im2'),
+
             html.Table([
                 html.Tr([html.Td('Team #2 Win %: '), html.Td(id='imp2')]),
-            ]),
+            ]), 
+            html.Table([
+                html.Tr([html.Td('SportsBook Edge: '), html.Td(id='sportsEdge')]),
+            ])
+            
+            ,
         ]),
         html.Div(children = [html.Div(children = 'TEAM 1 VS TEAM 2'),
             dcc.Dropdown(['Atlanta Hawks', 'Boston Celtics', 'Brooklyn Nets', 'Charlotte Hornets', 'Chicago Bulls', 'Cleveland Cavaliers', 'Dallas Mavericks', 'Denver Nuggets', 'Detroit Pistons', 'Golden State Warriors', 'Houston Rockets', 'Indiana Pacers', 'Los Angeles Clippers', 'Los Angeles Lakers', 'Memphis Grizzlies', 'Miami Heat', 'Milwaukee Bucks', 'Minnesota Timberwolves', 'New Orleans Pelicans', 'New York Knicks', 'Oklahoma City Thunder','Orlando Magic', 'Philadelphia 76ers', 'Phoenix Suns', 'Portland Trail Blazers', 'Sacramento Kings', 'San Antonio Spurs', 'Toronto Raptors', 'Utah Jazz', 'Washington Wizards'], 'Atlanta Hawks', id='drop1', style=dict(width='50%')), 
@@ -152,29 +161,59 @@ def update_graph(drop1, drop2):
 @app.callback(
     Output('imp1', 'children'),
     Output('imp2', 'children'),
+    Output('im1', 'data'), 
+    Output('im2', 'data'),
     Input('ImpliedProb1', 'value'),
     Input('ImpliedProb2', 'value')
 )
 
 def updateAmericanOdds(imp1, imp2):
-    percentage = 0
+    percentage1 = 0
+    percentage2 = 0
     listStr = []
-    if imp1 != None:
+    if imp1 != None and imp2 != None: 
         if (imp1 >= 0):
-            percentage = (100 / (imp1 + 100)) * 100
+            percentage1 = (100 / (imp1 + 100)) * 100
         else: 
-            percentage = ((-1*(imp1)) / (-1*(imp1) + 100)) * 100
-        asStr = str(percentage)+ " %"
-        listStr.append(asStr)
-    if imp2 != None:
+            percentage1 = ((-1*(imp1)) / (-1*(imp1) + 100)) * 100
+
         if (imp2 >= 0):
-            percentage = (100 / (imp2 + 100)) * 100
+            percentage2 = (100 / (imp2 + 100)) * 100
         else:
-            percentage = ((-1 * (imp2)) / (-1 * (imp2) + 100)) * 100
-        asStr = str(percentage) + " %"
-        listStr.append(asStr)
+            percentage2 = ((-1 * (imp2)) / (-1 * (imp2) + 100)) * 100
+
+        asStr1 = str(percentage1)+ " %"
+        asStr2 = str(percentage2)+ " %"
+        listStr = [asStr1, asStr2, percentage1, percentage2]
         return listStr
-    return ["", ""]
+    return ["", "", "", ""]
+
+
+@app.callback(
+    Output('sportsEdge', 'children'),
+    Input('im1', 'data'), 
+    Input('im2', 'data')
+
+)
+def sportsbookEdge(i1, i2): 
+    percentage1 = 0
+    percentage2 = 0
+
+    if i1== "" or i2 == "" or i1 == None or i2 == None: 
+        return [""]
+    else: 
+        if (i1 >= 0):
+            percentage1 = round((100 / (i1 + 100)), 2)
+        else: 
+            percentage1 = round(((-1*(i1)) / (-1*(i1) + 100)), 2)
+
+        if (i2 >= 0):
+            percentage2 = round((100 / (i2 + 100)), 2)
+        else:
+            percentage2 = round(((-1 * (i2)) / (-1 * (i2) + 100)), 2)
+        sportsEdge = math.floor((percentage1 + percentage2) - 1)
+        return [(str(sportsEdge) + " %")]
+
 
 
 if __name__ == '__main__':
