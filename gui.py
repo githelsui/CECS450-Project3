@@ -79,18 +79,14 @@ print(normalizationDataBlocks)
 normalizationDataSteals = readcsv.normalizeStatsSteals()
 print(normalizationDataSteals)
 
-print("Points:" + str(len(normalizationDataPoints)))
-print("Assists:" + str(len(normalizationDataAssists)))
-print("Blocks:" + str(len(normalizationDataBlocks)))
-print("Steals:" + str(len(normalizationDataSteals)))
 #dictionary stuff
 
 teamName = ['Atlanta Hawks', 'Boston Celtics', 'Brooklyn Nets', 'Charlotte Hornets', 'Chicago Bulls', 'Cleveland Cavaliers', 'Dallas Mavericks', 'Denver Nuggets', 'Detroit Pistons', 'Golden State Warriors', 'Houston Rockets', 'Indiana Pacers', 'Los Angeles Clippers', 'Los Angeles Lakers', 'Memphis Grizzlies', 'Miami Heat', 'Milwaukee Bucks', 'Minnesota Timberwolves', 'New Orleans Pelicans', 'New York Knicks', 'Oklahoma City Thunder',
                       'Orlando Magic', 'Philadelphia 76ers', 'Phoenix Suns', 'Portland Trail Blazers', 'Sacramento Kings', 'San Antonio Spurs', 'Toronto Raptors', 'Utah Jazz', 'Washington Wizards']
 print('names:' + str(len(teamName)))
-dict = {"Team Name:":teamName, "Points":normalizationDataPoints,"Assists":normalizationDataAssists,"Blocks":normalizationDataBlocks,"Steals":normalizationDataSteals}
-print(dict)
-df3 = pd.DataFrame(dict)
+TeamsDict = {"Team Name:":teamName, "Points":normalizationDataPoints,"Assists":normalizationDataAssists,"Blocks":normalizationDataBlocks,"Steals":normalizationDataSteals}
+print(TeamsDict)
+df3 = pd.DataFrame(TeamsDict)
 print(df3)
 
 app.layout = html.Div(

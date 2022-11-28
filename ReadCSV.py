@@ -15,7 +15,7 @@ import csv
 
 
 def teamWinsDataFrame():
-    data = list(csv.reader(open("Sports Reference NBA Data (2021 - 2022) Season.xlsx - sportsref_download.xls.csv")))
+    data = list(csv.reader(open("Sports_Reference_NBA_Data_2021_-_2022_Season.xlsx_-_sportsref_download.xls.csv")))
     res = []
     teamNames = []
     wins = []
@@ -28,7 +28,7 @@ def teamWinsDataFrame():
 
 def normalizeStatsPoints():
     normalization = []
-    data = list(csv.reader(open("Sports Reference NBA Data (2021 - 2022) Season.xlsx - sportsref_download.xls.csv")))
+    data = list(csv.reader(open("Sports_Reference_NBA_Data_2021_-_2022_Season.xlsx_-_sportsref_download.xls.csv")))
     for i in range(len(data)):
         if i > 0 and i < 31:
             normalization.append(float(data[i][24]))
@@ -47,7 +47,7 @@ def normalizeStatsPoints():
 
 def normalizeStatsAssits():
     normalization = []
-    data = list(csv.reader(open("Sports Reference NBA Data (2021 - 2022) Season.xlsx - sportsref_download.xls.csv")))
+    data = list(csv.reader(open("Sports_Reference_NBA_Data_2021_-_2022_Season.xlsx_-_sportsref_download.xls.csv")))
     for i in range(len(data)):
         if i > 0 and i < 31:
             normalization.append(float(data[i][19]))
@@ -67,7 +67,7 @@ def normalizeStatsAssits():
 
 def normalizeStatsBlocks():
     normalization = []
-    data = list(csv.reader(open("Sports Reference NBA Data (2021 - 2022) Season.xlsx - sportsref_download.xls.csv")))
+    data = list(csv.reader(open("Sports_Reference_NBA_Data_2021_-_2022_Season.xlsx_-_sportsref_download.xls.csv")))
     for i in range(len(data)):
         if i > 0 and i < 31:
             normalization.append(float(data[i][21]))
@@ -86,7 +86,7 @@ def normalizeStatsBlocks():
 
 def normalizeStatsSteals():
     normalization = []
-    data = list(csv.reader(open("Sports Reference NBA Data (2021 - 2022) Season.xlsx - sportsref_download.xls.csv")))
+    data = list(csv.reader(open("Sports_Reference_NBA_Data_2021_-_2022_Season.xlsx_-_sportsref_download.xls.csv")))
     for i in range(len(data)):
         if i > 0 and i < 31:
             normalization.append(float(data[i][20]))
