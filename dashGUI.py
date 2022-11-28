@@ -2,7 +2,8 @@ from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
 import pandas as pd
 import csv
-from ReadCSV import teamWinsDataFrame
+
+import ReadCSV as readcsv
 
 #n
 #runs on http://127.0.0.1:8050/
@@ -33,19 +34,32 @@ df2 = pd.DataFrame.from_dict(dict(
 rad1 = px.line_polar(df1, r='value',
                      theta='description',
                      line_close=True,
-                     range_r=[0, 150])
+                     range_r=[0, 100])
 
 rad2 = px.line_polar(df2, r='value',
                      theta='description',
                      line_close=True,
-                     range_r=[0, 150])
+                     range_r=[0, 100])
 #rad1.show()
 
 df2 = px.data.stocks()
-teamWins = teamWinsDataFrame()
-print(teamWins)
+teamWins = readcsv.teamWinsDataFrame()
+#print(teamWins)
 hist = px.histogram(x=teamWins[0], y=teamWins[1], labels=dict(x='Teams', y='Wins'))
 #hist = px.histogram(df2, x = "date", nbins = 23) #23 weeks in nba season
+
+# Lists w/ Normalized Data for Radial Chart Ranges
+normalizationDataPoints = readcsv.normalizeStatsPoints()
+print(normalizationDataPoints)
+
+normalizationDataAssists = readcsv.normalizeStatsAssits()
+print(normalizationDataAssists)
+
+normalizationDataBlocks = readcsv.normalizeStatsBlocks()
+print(normalizationDataBlocks)
+
+normalizationDataSteals = readcsv.normalizeStatsSteals()
+print(normalizationDataSteals)
 
 
 app.layout = html.Div(
