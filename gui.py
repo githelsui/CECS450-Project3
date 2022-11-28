@@ -88,9 +88,9 @@ print("Steals:" + str(len(normalizationDataSteals)))
 teamName = ['Atlanta Hawks', 'Boston Celtics', 'Brooklyn Nets', 'Charlotte Hornets', 'Chicago Bulls', 'Cleveland Cavaliers', 'Dallas Mavericks', 'Denver Nuggets', 'Detroit Pistons', 'Golden State Warriors', 'Houston Rockets', 'Indiana Pacers', 'Los Angeles Clippers', 'Los Angeles Lakers', 'Memphis Grizzlies', 'Miami Heat', 'Milwaukee Bucks', 'Minnesota Timberwolves', 'New Orleans Pelicans', 'New York Knicks', 'Oklahoma City Thunder',
                       'Orlando Magic', 'Philadelphia 76ers', 'Phoenix Suns', 'Portland Trail Blazers', 'Sacramento Kings', 'San Antonio Spurs', 'Toronto Raptors', 'Utah Jazz', 'Washington Wizards']
 print('names:' + str(len(teamName)))
-dict = {"Team Name:":teamName, "Points":normalizationDataPoints,"Assists":normalizationDataAssists,"Blocks":normalizationDataBlocks,"Steals":normalizationDataSteals}
-print(dict)
-df3 = pd.DataFrame(dict)
+dict1 = {"Team Name:":teamName, "Points":normalizationDataPoints,"Assists":normalizationDataAssists,"Blocks":normalizationDataBlocks,"Steals":normalizationDataSteals}
+print(dict1)
+df3 = pd.DataFrame(dict1)
 print(df3)
 
 app.layout = html.Div(
@@ -231,15 +231,15 @@ def sportsbookEdge(i1, i2):
         return [""]
     else: 
         if (i1 >= 0):
-            percentage1 = round((100 / (i1 + 100)), 2)
+            percentage1 = (100 / (i1 + 100))
         else: 
-            percentage1 = round(((-1*(i1)) / (-1*(i1) + 100)), 2)
+            percentage1 = ((-1*(i1)) / (-1*(i1) + 100))
 
         if (i2 >= 0):
-            percentage2 = round((100 / (i2 + 100)), 2)
+            percentage2 = (100 / (i2 + 100))
         else:
-            percentage2 = round(((-1 * (i2)) / (-1 * (i2) + 100)), 2)
-        sportsEdge = math.floor((percentage1 + percentage2) - 1)
+            percentage2 = ((-1 * (i2)) / (-1 * (i2) + 100))
+        sportsEdge = (percentage1 + percentage2) - 1
         return [(str(sportsEdge) + " %")]
 
 
