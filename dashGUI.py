@@ -73,12 +73,20 @@ app.layout = html.Div(
             figure = hist
         ),
         html.Div(children = ['Implied Probability\n\n', dcc.Input(
-            id='ImpliedProb', 
+            id='ImpliedProb1',
             type = 'number',
             value = 100
             ), 
             html.Table([
-                html.Tr([html.Td('Win %: '), html.Td(id='imp')]),
+                html.Tr([html.Td('Team #1 Win %: '), html.Td(id='imp1')]),
+            ]),
+            dcc.Input(
+            id='ImpliedProb2',
+            type = 'number',
+            value = 100
+            ),
+            html.Table([
+                html.Tr([html.Td('Team #2 Win %: '), html.Td(id='imp2')]),
             ]),
         ]),
         html.Div(children = [html.Div(children = 'TEAM 1 VS TEAM 2'),
@@ -142,20 +150,31 @@ def update_graph(drop1, drop2):
 #implied probability callback
 #allows users to enter a value and get the odds of them winning (as percentages) 
 @app.callback(
-    Output('imp', 'children'),
-    Input('ImpliedProb', 'value')
+    Output('imp1', 'children'),
+    Output('imp2', 'children'),
+    Input('ImpliedProb1', 'value'),
+    Input('ImpliedProb2', 'value')
 )
 
-def updateAmericanOdds(imp):
+def updateAmericanOdds(imp1, imp2):
     percentage = 0
-    if imp != None: 
-        if (imp >= 0): 
-            percentage = (100 / (imp + 100)) * 100
+    listStr = []
+    if imp1 != None:
+        if (imp1 >= 0):
+            percentage = (100 / (imp1 + 100)) * 100
         else: 
-            percentage = ((-1*(imp)) / (-1*(imp) + 100)) * 100 
+            percentage = ((-1*(imp1)) / (-1*(imp1) + 100)) * 100
         asStr = str(percentage)+ " %"
-        return asStr
-    return ""
+        listStr.append(asStr)
+    if imp2 != None:
+        if (imp2 >= 0):
+            percentage = (100 / (imp2 + 100)) * 100
+        else:
+            percentage = ((-1 * (imp2)) / (-1 * (imp2) + 100)) * 100
+        asStr = str(percentage) + " %"
+        listStr.append(asStr)
+        return listStr
+    return ["", ""]
 
 
 if __name__ == '__main__':
