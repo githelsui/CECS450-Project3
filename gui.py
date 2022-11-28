@@ -227,15 +227,15 @@ def sportsbookEdge(i1, i2):
         return [""]
     else: 
         if (i1 >= 0):
-            percentage1 = round((100 / (i1 + 100)), 2)
+            percentage1 = ((100 / (i1 + 100)))
         else: 
-            percentage1 = round(((-1*(i1)) / (-1*(i1) + 100)), 2)
+            percentage1 = (((-1*(i1)) / (-1*(i1) + 100)))
 
         if (i2 >= 0):
-            percentage2 = round((100 / (i2 + 100)), 2)
+            percentage2 = ((100 / (i2 + 100)))
         else:
-            percentage2 = round(((-1 * (i2)) / (-1 * (i2) + 100)), 2)
-        sportsEdge = math.floor((percentage1 + percentage2) - 1)
+            percentage2 = (((-1 * (i2)) / (-1 * (i2) + 100)))
+        sportsEdge = ((percentage1 + percentage2) - 1) * 10
         return [(str(sportsEdge) + " %")]
 
 
