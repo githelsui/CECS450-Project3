@@ -21,13 +21,15 @@ from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
 import pandas as pd
 import csv
+import ReadCSV as readcsv
+
 
 #n
 #runs on http://127.0.0.1:8050/
 
 app = Dash(__name__)
 #Grab data from CSV file.
-with open('Sports_Reference_NBA_Data_2021_-_2022_Season.xlsx_-_sportsref_download.xls.csv') as csv_file:
+with open('Sports Reference NBA Data (2021 - 2022) Season.xlsx - sportsref_download.xls.csv') as csv_file:
     csv_reader = csv.reader(csv_file)
     rows = list(csv_reader)
 
@@ -48,19 +50,50 @@ df2 = pd.DataFrame.from_dict(dict(
         description = descriptionNames
         ))
 #print(df1)
-rad1 = px.line_polar(df1, r= 'value',
-                     theta = 'description',
-                     line_close = True,
-                     range_r = [0, 150])
 
-rad2 = px.line_polar(df2, r= 'value',
-                     theta = 'description',
-                     line_close = True,
-                     range_r = [0, 150])
+rad1 = px.line_polar(df1, r='value',
+                     theta='description',
+                     line_close=True,
+                     range_r=[0, 100])
+
+rad2 = px.line_polar(df2, r='value',
+                     theta='description',
+                     line_close=True,
+                     range_r=[0, 100])
 #rad1.show()
 
 df2 = px.data.stocks()
-hist = px.histogram(df2, x = "date", nbins = 23) #23 weeks in nba season
+teamWins = readcsv.teamWinsDataFrame()
+#print(teamWins)
+hist = px.histogram(x=teamWins[0], y=teamWins[1], labels=dict(x='Teams', y='Wins'))
+#hist = px.histogram(df2, x = "date", nbins = 23) #23 weeks in nba season
+
+# Lists w/ Normalized Data for Radial Chart Ranges
+normalizationDataPoints = readcsv.normalizeStatsPoints()
+print(normalizationDataPoints)
+
+normalizationDataAssists = readcsv.normalizeStatsAssits()
+print(normalizationDataAssists)
+
+normalizationDataBlocks = readcsv.normalizeStatsBlocks()
+print(normalizationDataBlocks)
+
+normalizationDataSteals = readcsv.normalizeStatsSteals()
+print(normalizationDataSteals)
+
+print("Points:" + str(len(normalizationDataPoints)))
+print("Assists:" + str(len(normalizationDataAssists)))
+print("Blocks:" + str(len(normalizationDataBlocks)))
+print("Steals:" + str(len(normalizationDataSteals)))
+#dictionary stuff
+
+teamName = ['Atlanta Hawks', 'Boston Celtics', 'Brooklyn Nets', 'Charlotte Hornets', 'Chicago Bulls', 'Cleveland Cavaliers', 'Dallas Mavericks', 'Denver Nuggets', 'Detroit Pistons', 'Golden State Warriors', 'Houston Rockets', 'Indiana Pacers', 'Los Angeles Clippers', 'Los Angeles Lakers', 'Memphis Grizzlies', 'Miami Heat', 'Milwaukee Bucks', 'Minnesota Timberwolves', 'New Orleans Pelicans', 'New York Knicks', 'Oklahoma City Thunder',
+                      'Orlando Magic', 'Philadelphia 76ers', 'Phoenix Suns', 'Portland Trail Blazers', 'Sacramento Kings', 'San Antonio Spurs', 'Toronto Raptors', 'Utah Jazz', 'Washington Wizards']
+print('names:' + str(len(teamName)))
+dict = {"Team Name:":teamName, "Points":normalizationDataPoints,"Assists":normalizationDataAssists,"Blocks":normalizationDataBlocks,"Steals":normalizationDataSteals}
+print(dict)
+df3 = pd.DataFrame(dict)
+print(df3)
 
 
 app.layout = html.Div(
