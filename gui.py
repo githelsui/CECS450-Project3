@@ -33,38 +33,6 @@ with open('Sports_Reference_NBA_Data_2021_-_2022_Season.xlsx_-_sportsref_downloa
     csv_reader = csv.reader(csv_file)
     rows = list(csv_reader)
 
-# This is hacky, but i dont know why the radial chart breaks if I do it the easier, more direct way.
-dataValues1 = [float(rows[1][24]), float(rows[1][19]), float(rows[1][20]), float(rows[1][21])]
-dataValues2 = [float(rows[2][24]), float(rows[2][19]), float(rows[2][20]), float(rows[2][21])]
-descriptionNames = ['Points Per Game', 'Assists Per Game', 'Steals Per Game', 'Blocks Per Game']
-# print(dataValues)
-
-# Selected columns are Points (Column Y), Assists (Column T), Steals (Column U), Blocks (Column V)
-# Defaulting to first row until we decide how to change what team is being viewed
-df1 = pd.DataFrame.from_dict(dict(
-        value = dataValues1,
-        description = descriptionNames
-        ))
-df2 = pd.DataFrame.from_dict(dict(
-        value = dataValues2,
-        description = descriptionNames
-        ))
-#print(df1)
-rad1 = px.line_polar(df1, r= 'value',
-                     theta = 'description',
-                     line_close = True,
-                     range_r = [0, 150])
-
-rad2 = px.line_polar(df2, r= 'value',
-                     theta = 'description',
-                     line_close = True,
-                     range_r = [0, 150])
-#rad1.show()
-
-teamWins = readcsv.teamWinsDataFrame()
-#print(teamWins)
-hist = px.histogram(x=teamWins[0], y=teamWins[1], labels=dict(x='Teams', y='Wins'))
-#hist = px.histogram(df2, x = "date", nbins = 23) #23 weeks in nba season
 
 # Lists w/ Normalized Data for Radial Chart Ranges
 normalizationDataPoints = readcsv.normalizeStatsPoints()
@@ -88,10 +56,48 @@ print("Steals:" + str(len(normalizationDataSteals)))
 teamName = ['Atlanta Hawks', 'Boston Celtics', 'Brooklyn Nets', 'Charlotte Hornets', 'Chicago Bulls', 'Cleveland Cavaliers', 'Dallas Mavericks', 'Denver Nuggets', 'Detroit Pistons', 'Golden State Warriors', 'Houston Rockets', 'Indiana Pacers', 'Los Angeles Clippers', 'Los Angeles Lakers', 'Memphis Grizzlies', 'Miami Heat', 'Milwaukee Bucks', 'Minnesota Timberwolves', 'New Orleans Pelicans', 'New York Knicks', 'Oklahoma City Thunder',
                       'Orlando Magic', 'Philadelphia 76ers', 'Phoenix Suns', 'Portland Trail Blazers', 'Sacramento Kings', 'San Antonio Spurs', 'Toronto Raptors', 'Utah Jazz', 'Washington Wizards']
 print('names:' + str(len(teamName)))
-dict1 = {"Team Name:":teamName, "Points":normalizationDataPoints,"Assists":normalizationDataAssists,"Blocks":normalizationDataBlocks,"Steals":normalizationDataSteals}
-print(dict1)
-df3 = pd.DataFrame(dict1)
+normalizedDict = {"Team Name:":teamName, "Points":normalizationDataPoints,"Assists":normalizationDataAssists,"Steals":normalizationDataSteals,"Blocks":normalizationDataBlocks}
+print(normalizedDict)
+df3 = pd.DataFrame(normalizedDict)
 print(df3)
+
+print("IAT TEST: " + str(df3.iat[0,1]))
+
+
+# This is hacky, but i dont know why the radial chart breaks if I do it the easier, more direct way.
+dataValues1 = [float(df3.iat[0,1]), float(df3.iat[0,2]), float(df3.iat[0,3]), float(df3.iat[0,4])]
+dataValues2 = [float(df3.iat[1,1]), float(df3.iat[1,2]), float(df3.iat[1,3]), float(df3.iat[1,4])]
+descriptionNames = ['Points Per Game', 'Assists Per Game', 'Steals Per Game', 'Blocks Per Game']
+# print(dataValues)
+
+
+# Selected columns are Points (Column Y), Assists (Column T), Steals (Column U), Blocks (Column V)
+# Defaulting to first row until we decide how to change what team is being viewed
+df1 = pd.DataFrame.from_dict(dict(
+        value = dataValues1,
+        description = descriptionNames
+        ))
+df2 = pd.DataFrame.from_dict(dict(
+        value = dataValues2,
+        description = descriptionNames
+        ))
+#print(df1)
+rad1 = px.line_polar(df1, r= 'value',
+                     theta = 'description',
+                     line_close = True,
+                     range_r = [0, 100])
+
+rad2 = px.line_polar(df2, r= 'value',
+                     theta = 'description',
+                     line_close = True,
+                     range_r = [0, 100])
+#rad1.show()
+
+teamWins = readcsv.teamWinsDataFrame()
+#print(teamWins)
+hist = px.histogram(x=teamWins[0], y=teamWins[1], labels=dict(x='Teams', y='Wins'))
+#hist = px.histogram(df2, x = "date", nbins = 23) #23 weeks in nba season
+
 
 app.layout = html.Div(
     children=[
@@ -152,12 +158,16 @@ app.layout = html.Div(
 )
 def update_graph(drop1, drop2):
     allTeams = ['Atlanta Hawks', 'Boston Celtics', 'Brooklyn Nets', 'Charlotte Hornets', 'Chicago Bulls', 'Cleveland Cavaliers', 'Dallas Mavericks', 'Denver Nuggets', 'Detroit Pistons', 'Golden State Warriors', 'Houston Rockets', 'Indiana Pacers', 'Los Angeles Clippers', 'Los Angeles Lakers', 'Memphis Grizzlies', 'Miami Heat', 'Milwaukee Bucks', 'Minnesota Timberwolves', 'New Orleans Pelicans', 'New York Knicks', 'Oklahoma City Thunder','Orlando Magic', 'Philadelphia 76ers', 'Phoenix Suns', 'Portland Trail Blazers', 'Sacramento Kings', 'San Antonio Spurs', 'Toronto Raptors', 'Utah Jazz', 'Washington Wizards']
-    rowNumber1 = allTeams.index(drop1) + 1
-    rowNumber2 = allTeams.index(drop2) + 1
+    rowNumber1 = allTeams.index(drop1)
+    rowNumber2 = allTeams.index(drop2)
 
     #gets the data values from the rows list created when the csv file was imported
-    dataValues1 = [float(rows[rowNumber1][24]), float(rows[rowNumber1][19]), float(rows[rowNumber1][20]), float(rows[rowNumber1][21])]
-    dataValues2 = [float(rows[rowNumber2][24]), float(rows[rowNumber2][19]), float(rows[rowNumber2][20]), float(rows[rowNumber2][21])]
+    # dataValues1 = [float(rows[rowNumber1][24]), float(rows[rowNumber1][19]), float(rows[rowNumber1][20]), float(rows[rowNumber1][21])]
+    # dataValues2 = [float(rows[rowNumber2][24]), float(rows[rowNumber2][19]), float(rows[rowNumber2][20]), float(rows[rowNumber2][21])]
+
+    # Updated to Normalized Values on Radial Chart
+    dataValues1 = [float(df3.iat[rowNumber1, 1]), float(df3.iat[rowNumber1, 2]), float(df3.iat[rowNumber1, 3]), float(df3.iat[rowNumber1, 4])]
+    dataValues2 = [float(df3.iat[rowNumber2, 1]), float(df3.iat[rowNumber2, 2]), float(df3.iat[rowNumber2, 3]), float(df3.iat[rowNumber2, 4])]
 
     #normalization would go here
     descriptionNames = ['Points Per Game', 'Assists Per Game', 'Steals Per Game', 'Blocks Per Game']
@@ -176,12 +186,12 @@ def update_graph(drop1, drop2):
     rad1 = px.line_polar(df1, r= 'value',
                      theta = 'description',
                      line_close = True,
-                     range_r = [0, 150])
+                     range_r = [0, 100])
 
     rad2 = px.line_polar(df2, r= 'value',
                      theta = 'description',
                      line_close = True,
-                     range_r = [0, 150])
+                     range_r = [0, 100])
 
     return [rad1, rad2]
 
