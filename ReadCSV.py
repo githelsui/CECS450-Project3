@@ -26,6 +26,18 @@ def teamWinsDataFrame():
     res = [teamNames, wins]
     return res
 
+def teamLossesDataFrame():
+    data = list(csv.reader(open("Sports_Reference_NBA_Data_2021_-_2022_Season.xlsx_-_sportsref_download.xls.csv")))
+    res = []
+    teamNames = []
+    losses = []
+    for i in range(len(data)):
+        if data[i][1] != "Team" and data[i][1] != "League Averages":
+            teamNames.append(data[i][1])
+            losses.append(data[i][26])
+    res = [teamNames, losses]
+    return res
+
 def normalizeStatsPoints():
     normalization = []
     data = list(csv.reader(open("Sports_Reference_NBA_Data_2021_-_2022_Season.xlsx_-_sportsref_download.xls.csv")))

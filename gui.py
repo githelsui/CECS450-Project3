@@ -94,8 +94,11 @@ rad2 = px.line_polar(df2, r= 'value',
 #rad1.show()
 
 teamWins = readcsv.teamWinsDataFrame()
+teamLosses = readcsv.teamLossesDataFrame()
 #print(teamWins)
-hist = px.histogram(x=teamWins[0], y=teamWins[1], labels=dict(x='Teams', y='Wins'))
+histWins = px.histogram(x=teamWins[0], y=teamWins[1], title='Number of Games Won per Team', labels=dict(x='Teams', y='Wins'))
+histLosses = px.histogram(x=teamLosses[0], y=teamLosses[1], title='Number of Games Lost per Team', labels=dict(x='Teams', y='Losses'))
+
 #hist = px.histogram(df2, x = "date", nbins = 23) #23 weeks in nba season
 
 
@@ -103,10 +106,13 @@ app.layout = html.Div(
     children=[
         html.H1(children='Sports Betting'),
         html.Div(id='td-output'),
-        html.Div(children = 'All Teams Wins/Losses'),
+        html.Div(children = 'All Teams'),
+        html.Div(children = [html.Div(children = 'Wins / Losses '),
+            dcc.Dropdown(['Wins', 'Losses'], 'Wins', id='dropHistogram', style={'display': 'inline block'}), 
+        ]),
         dcc.Graph(
             id = 'Wins/Loss Histogram',
-            figure = hist
+            figure = histWins
         ),
         html.Div(children = ['Implied Probability\n\n', dcc.Input(
             id='ImpliedProb1',
@@ -145,6 +151,18 @@ app.layout = html.Div(
         ])
     ])
 
+#this callback is for Histogram option between wins and losses per each team
+@app.callback(
+    Output('Wins/Loss Histogram', 'figure'),
+    Input('dropHistogram', 'value'),
+)
+
+def update_histogram(drop):
+    if drop != None:
+        if drop == 'Wins':
+            return histWins
+        else:
+            return histLosses
 
 #this callback allows users to choose the teams they want to see in the radial chart
 #the Input elements are parameters to the function immediately below
