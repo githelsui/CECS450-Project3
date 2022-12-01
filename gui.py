@@ -123,7 +123,7 @@ app.layout = html.Div(
             ), 
             html.Table([
                 html.Tr([html.Td('Win %: '), html.Td(id='imp1')]),
-            ]),
+            ], style={'padding-bottom': '1%'}),
 
             dcc.Store(id = 'im1'), 
             dcc.Store(id = 'im2'),
@@ -136,7 +136,7 @@ app.layout = html.Div(
                 
                 html.Table([
                     html.Tr([html.Td('Win %: '), html.Td(id='imp2')]),
-                ]), 
+                ], style={'padding-bottom': '1%'}), 
                 ]),
             
             html.Table([
