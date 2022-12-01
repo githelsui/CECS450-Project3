@@ -104,50 +104,58 @@ histLosses = px.histogram(x=teamLosses[0], y=teamLosses[1], title='Number of Gam
 
 app.layout = html.Div(
     children=[
-        html.H1(children='Sports Betting'),
+        html.H1(children='Sports Betting', style = {'border-bottom':'#000000 solid'}),
         html.Div(id='td-output'),
-        html.Div(children = 'All Teams'),
-        html.Div(children = [html.Div(children = 'Wins / Losses '),
-            dcc.Dropdown(['Wins', 'Losses'], 'Wins', id='dropHistogram', style={'display': 'inline block'}), 
+        html.Div(children = [html.Div(children = 'All Teams Wins / Losses '),
+            dcc.Dropdown(['Wins', 'Losses'], 'Wins', id='dropHistogram', style={'display': 'inline block', 'width': '40%'}), 
         ]),
         dcc.Graph(
             id = 'Wins/Loss Histogram',
             figure = histWins
         ),
-        html.Div(children = ['Implied Probability\n\n', dcc.Input(
+        html.Div(children = ('Implied Probability\n\n'), style = {'font-size': '20px', 'padding-bottom': '2%', 'border-top':'#000000 solid'}),
+        html.Div(children = ['Team #1 Odds: ', 
+            dcc.Input(
             id='ImpliedProb1',
             type = 'number',
-            value = 100
+            value = 100, 
+            style = {'display': 'inline-block'}
             ), 
             html.Table([
-                html.Tr([html.Td('Team #1 Win %: '), html.Td(id='imp1')]),
+                html.Tr([html.Td('Win %: '), html.Td(id='imp1')]),
             ]),
-            dcc.Input(
-            id='ImpliedProb2',
-            type = 'number',
-            value = 100
-            ),
+
             dcc.Store(id = 'im1'), 
             dcc.Store(id = 'im2'),
-
-            html.Table([
-                html.Tr([html.Td('Team #2 Win %: '), html.Td(id='imp2')]),
-            ]), 
-            html.Table([
-                html.Tr([html.Td('SportsBook Edge: '), html.Td(id='sportsEdge')]),
-            ])
+            html.Div(children = ['Team #2 Odds: ', 
+                    dcc.Input(
+                    id='ImpliedProb2',
+                    type = 'number',
+                    value = 100
+                ),
+                
+                html.Table([
+                    html.Tr([html.Td('Win %: '), html.Td(id='imp2')]),
+                ]), 
+                ]),
             
-            ,
-        ]),
-        html.Div(children = [html.Div(children = 'TEAM 1 VS TEAM 2'),
-            dcc.Dropdown(['Atlanta Hawks', 'Boston Celtics', 'Brooklyn Nets', 'Charlotte Hornets', 'Chicago Bulls', 'Cleveland Cavaliers', 'Dallas Mavericks', 'Denver Nuggets', 'Detroit Pistons', 'Golden State Warriors', 'Houston Rockets', 'Indiana Pacers', 'Los Angeles Clippers', 'Los Angeles Lakers', 'Memphis Grizzlies', 'Miami Heat', 'Milwaukee Bucks', 'Minnesota Timberwolves', 'New Orleans Pelicans', 'New York Knicks', 'Oklahoma City Thunder','Orlando Magic', 'Philadelphia 76ers', 'Phoenix Suns', 'Portland Trail Blazers', 'Sacramento Kings', 'San Antonio Spurs', 'Toronto Raptors', 'Utah Jazz', 'Washington Wizards'], 'Atlanta Hawks', id='drop1', style={'display': 'inline block'}), 
-            dcc.Dropdown(['Atlanta Hawks', 'Boston Celtics', 'Brooklyn Nets', 'Charlotte Hornets', 'Chicago Bulls', 'Cleveland Cavaliers', 'Dallas Mavericks', 'Denver Nuggets', 'Detroit Pistons', 'Golden State Warriors', 'Houston Rockets', 'Indiana Pacers', 'Los Angeles Clippers', 'Los Angeles Lakers', 'Memphis Grizzlies', 'Miami Heat', 'Milwaukee Bucks', 'Minnesota Timberwolves', 'New Orleans Pelicans', 'New York Knicks', 'Oklahoma City Thunder','Orlando Magic', 'Philadelphia 76ers', 'Phoenix Suns', 'Portland Trail Blazers', 'Sacramento Kings', 'San Antonio Spurs', 'Toronto Raptors', 'Utah Jazz', 'Washington Wizards'], 'Atlanta Hawks', id='drop2', style={'display': 'inline block'}) 
+            html.Table([
+                html.Tr([html.Td('SportsBook Edge: '), html.Td(id='sportsEdge')],  style={'padding-top': '2%'}),
+            ])
+        ], style={'padding-bottom': '2%'}),
+        html.Div(children = [html.Div(children = "Radial Chart of Normalized Data", style={'font-size': '20px','border-top':'#000000 solid'}), 
+        html.Div(children = [html.Div(children = 'TEAM 1', style={'padding-top': '2%'}),
+            dcc.Dropdown(['Atlanta Hawks', 'Boston Celtics', 'Brooklyn Nets', 'Charlotte Hornets', 'Chicago Bulls', 'Cleveland Cavaliers', 'Dallas Mavericks', 'Denver Nuggets', 'Detroit Pistons', 'Golden State Warriors', 'Houston Rockets', 'Indiana Pacers', 'Los Angeles Clippers', 'Los Angeles Lakers', 'Memphis Grizzlies', 'Miami Heat', 'Milwaukee Bucks', 'Minnesota Timberwolves', 'New Orleans Pelicans', 'New York Knicks', 'Oklahoma City Thunder','Orlando Magic', 'Philadelphia 76ers', 'Phoenix Suns', 'Portland Trail Blazers', 'Sacramento Kings', 'San Antonio Spurs', 'Toronto Raptors', 'Utah Jazz', 'Washington Wizards'], 'Atlanta Hawks', id='drop1', style={'display': 'inline block', 'width': '40%'}), 
 
         ]),
-        html.Div(children = [html.Div(children = "Radial Chart of Normalized Data"), 
-            dcc.Graph(id = 'rad1', figure = rad1, style={'display': 'inline-block'}), 
+        html.Div(children = [html.Div(children = 'TEAM 2'),
+            dcc.Dropdown(['Atlanta Hawks', 'Boston Celtics', 'Brooklyn Nets', 'Charlotte Hornets', 'Chicago Bulls', 'Cleveland Cavaliers', 'Dallas Mavericks', 'Denver Nuggets', 'Detroit Pistons', 'Golden State Warriors', 'Houston Rockets', 'Indiana Pacers', 'Los Angeles Clippers', 'Los Angeles Lakers', 'Memphis Grizzlies', 'Miami Heat', 'Milwaukee Bucks', 'Minnesota Timberwolves', 'New Orleans Pelicans', 'New York Knicks', 'Oklahoma City Thunder','Orlando Magic', 'Philadelphia 76ers', 'Phoenix Suns', 'Portland Trail Blazers', 'Sacramento Kings', 'San Antonio Spurs', 'Toronto Raptors', 'Utah Jazz', 'Washington Wizards'], 'Atlanta Hawks', id='drop2', style={'display': 'inline block', 'width': '40%'}) 
+
+        ]),
+
+            dcc.Graph(id = 'rad1', figure = rad1, style={'display': 'inline-block', 'padding-left': '5%'}), 
                       
-            dcc.Graph(id = 'rad2', figure = rad2, style={'display': 'inline-block'})
+            dcc.Graph(id = 'rad2', figure = rad2, style={'display': 'inline-block', 'padding-right': '5%%'})
         ])
     ])
 
